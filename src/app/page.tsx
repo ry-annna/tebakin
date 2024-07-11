@@ -3,6 +3,20 @@ import * as React from "react";
 import axios from "axios";
 import Image from "next/image";
 
+interface StatusKasbon {
+  [key: string]: {
+    title: string;
+    color: string;
+  };
+}
+
+const statusKasbon: StatusKasbon = {
+  // DEFAULT: { title: "DEFAULT", color: "success" },
+  CORRECT: { title: "DRAFT", color: "secondary" },
+  WRONG_PLACE: { title: "REJECTED", color: "error" },
+  // DEFAULT:
+};
+
 export default function Home() {
   const [word, setWord] = React.useState("crake");
   const [wordArray, setWordArray] = React.useState<string[]>([]);
@@ -39,6 +53,12 @@ export default function Home() {
     // });
     changeWordToArray(word, setWordArray);
   }, []);
+
+  const x = [
+    {
+      letter: "c",
+    },
+  ];
 
   React.useEffect(() => {
     console.log(word2Array);

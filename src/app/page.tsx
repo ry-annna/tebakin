@@ -65,8 +65,14 @@ export default function Home() {
   }, []);
 
   React.useEffect(() => {
-    setWordArray(changeWordToArray(word));
+    // setWordArray(changeWordToArray(word));
+    setWordArray(word.split(""));
+    console.log(word.split(""));
   }, [word]);
+
+  React.useEffect(() => {
+    console.log(wordArray);
+  }, [wordArray]);
 
   const changeWordToArray = (word: string) => {
     const array: any[] = [];
@@ -82,12 +88,13 @@ export default function Home() {
     return array;
   };
 
-  const cek = (letters: Array<any>) => {
+  const cek = (letters: Array<any>, correctArray: Array<any>) => {
     const arrayKosong: any[] = [];
+    // console.log(wordArray);
 
     for (let i = 0; i < letters.length; i++) {
-      if (wordArray.includes(letters[i].letter)) {
-        if (letters[i].letter === correctWord[i]) {
+      if (correctArray.includes(letters[i].letter)) {
+        if (letters[i].letter === correctArray[i]) {
           arrayKosong.push({
             letter: letters[i].letter,
             status: "text-green-500",
@@ -120,7 +127,7 @@ export default function Home() {
       const newTask = {
         id: Date.now(),
         text: text,
-        letters: cek(arrayKosong),
+        letters: cek(arrayKosong, wordArray),
       };
 
       setTasks([...tasks, newTask]);
@@ -152,6 +159,23 @@ export default function Home() {
             tebak
           </button>
 
+          <div className="flex gap-1 flex-col items-center justify-center">
+            <div>
+              {tasks.map((task, index) => (
+                <div key={index} className="flex gap-1">
+                  {task.letters.map((item, index2) => (
+                    <div
+                      key={index2}
+                      className={`flex font-bold text-lg ${item.status}`}
+                    >
+                      {item.letter}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* <div className="flex gap-1">
             {word3Array &&
               word3Array.map((item, index) => (
@@ -174,23 +198,6 @@ export default function Home() {
                 // </div>
               ))}
           </div> */}
-
-          <div className="flex gap-1 flex-col items-center justify-center">
-            <div>
-              {tasks.map((task, index) => (
-                <div key={index} className="flex gap-1">
-                  {task.letters.map((item, index2) => (
-                    <div
-                      key={index2}
-                      className={`flex font-bold text-lg ${item.status}`}
-                    >
-                      {item.letter}
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
     </main>

@@ -21,7 +21,8 @@ interface TaskInterface {
   text: string;
   letters: Array<{
     letter: string;
-    status: string;
+    statusBG: string;
+    statusBorder: string;
   }>;
 }
 [];
@@ -34,7 +35,7 @@ export default function Home() {
 
   const [word2, setWord2] = React.useState<string>("");
 
-  const correctWord = ["c", "r", "a", "k", "e"];
+  // const correctWord = ["c", "r", "a", "k", "e"];
 
   const getData = async () => {
     const url = `${process.env.NEXT_PUBLIC_RANDOMWORD_URL}`;
@@ -67,19 +68,20 @@ export default function Home() {
   React.useEffect(() => {
     // setWordArray(changeWordToArray(word));
     setWordArray(word.split(""));
-    console.log(word.split(""));
+    // console.log(word.split(""));
   }, [word]);
 
-  React.useEffect(() => {
-    console.log(wordArray);
-  }, [wordArray]);
+  // React.useEffect(() => {
+  //   console.log(wordArray);
+  // }, [wordArray]);
 
   const changeWordToArray = (word: string) => {
     const array: any[] = [];
     for (let i = 0; i < word.length; i++) {
       array.push({
         letter: word[i],
-        status: "DEFAULT",
+        statusBG: "DEFAULT",
+        statusBorder: "DEFAULT",
       });
     }
 
@@ -97,18 +99,24 @@ export default function Home() {
         if (letters[i].letter === correctArray[i]) {
           arrayKosong.push({
             letter: letters[i].letter,
-            status: "text-green-500",
+            // status: "text-green-500",
+            statusBG: "bg-green-500",
+            statusBorder: "border-green-600",
           });
         } else {
           arrayKosong.push({
             letter: letters[i].letter,
-            status: "text-yellow-500",
+            // status: "text-yellow-500",
+            statusBG: "bg-yellow-500",
+            statusBorder: "border-yellow-600",
           });
         }
       } else {
         arrayKosong.push({
           letter: letters[i].letter,
-          status: "text-gray-500",
+          // status: "text-gray-500",
+          statusBG: "bg-slate-500",
+          statusBorder: "border-slate-600",
         });
       }
     }
@@ -130,6 +138,8 @@ export default function Home() {
         letters: cek(arrayKosong, wordArray),
       };
 
+      console.log(newTask);
+
       setTasks([...tasks, newTask]);
       setWord2("");
     } else {
@@ -137,14 +147,16 @@ export default function Home() {
     }
   }
 
+  // const x = "slate";
+
   return (
     <main>
       <section className="p-3 xl:w-[1140px] flex flex-col items-center justify-center">
         <div className="flex flex-col gap-2">
-          <div>{word !== "" && <p>{word}</p>}</div>
+          <div>{word !== "" && <p className="uppercase">{word}</p>}</div>
           <div className="rounded-lg w-full p-2.5 border-2 border-gray-300 focus:border-rose-500 focus:outline-none">
             <input
-              maxLength={correctWord.length}
+              maxLength={word.length}
               type="text"
               className="w-full font-bold text-xl outline-none text-center"
               onChange={(e) => setWord2(e.target.value)}
@@ -153,28 +165,44 @@ export default function Home() {
             />
           </div>
           <button
-            className="px-4 py-2 bg-[#0589fc] active:bg-[#111826] rounded-lg uppercase text-white font-bold"
+            className="px-4 hover:bg-[#176cb7] py-2 bg-[#0589fc] active:bg-[#111826] rounded-lg uppercase text-white font-bold"
             onClick={() => addTask(word2)}
           >
             tebak
           </button>
 
           <div className="flex gap-1 flex-col items-center justify-center">
-            <div>
+            <div className="flex gap-1 flex-col">
               {tasks.map((task, index) => (
                 <div key={index} className="flex gap-1">
                   {task.letters.map((item, index2) => (
                     <div
                       key={index2}
-                      className={`flex font-bold text-lg ${item.status}`}
+                      // className={`flex font-bold text-lg ${item.status}`}
+                      // className={`bg-green-500 w-[46px] flex items-center justify-center p-3 rounded-lg border-2 border-green-600`}
+                      className={`${item.statusBG} ${item.statusBorder} w-[46px] flex items-center justify-center p-3 rounded-lg border-2`}
                     >
-                      {item.letter}
+                      <div
+                        className={`flex font-bold text-lg text-white uppercase`}
+                      >
+                        {item.letter}
+                      </div>
                     </div>
                   ))}
                 </div>
               ))}
             </div>
           </div>
+
+          {/* <div
+            className={`bg-green-500 w-fit p-3 rounded-lg border-2 border-green-600`}
+          >
+            <p className={`flex font-bold text-lg text-white`}>A</p>
+          </div>
+
+          <div className="bg-slate-500 w-fit p-3 rounded-lg border-2 border-slate-600">
+            <p className={`flex font-bold text-lg text-white`}>A</p>
+          </div> */}
 
           {/* <div className="flex gap-1">
             {word3Array &&
